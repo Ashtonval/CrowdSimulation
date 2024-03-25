@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class FlockManager : MonoBehaviour
 {
@@ -10,12 +11,17 @@ public class FlockManager : MonoBehaviour
     public int numFish = 20;
     public GameObject[] allFish;
     public Vector3 swimLimits = new Vector3(5, 5, 5);
+    public Vector3 goalPos = Vector3.zero;
 
     [Header("Fish Settings")]
     [Range(0.0f, 5.0f)]
     public float minSpeed;
     [Range(0.0f, 5.0f)]
     public float maxSpeed;
+    [Range(1.0f, 10.0f)]
+    public float neighbourDistance;
+    [Range(0.0f, 5.0f)]
+    public float rotationSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +31,16 @@ public class FlockManager : MonoBehaviour
             Vector3 pos = this.transform.position + new Vector3(UnityEngine.Random.Range(-swimLimits.x, swimLimits.x), UnityEngine.Random.Range(-swimLimits.y, swimLimits.y), UnityEngine.Random.Range(-swimLimits.z, swimLimits.z));
             allFish[i] = Instantiate(fishPrefab, pos, Quaternion.identity);
         }
+        FM = this;
+        goalPos = this.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Random.Range(0, 100) < 10)
+        {
+            goalPos = this.transform.position + new Vector3(UnityEngine.Random.Range(-swimLimits.x, swimLimits.x), UnityEngine.Random.Range(-swimLimits.y, swimLimits.y), UnityEngine.Random.Range(-swimLimits.z, swimLimits.z));
+        }
     }
 }
